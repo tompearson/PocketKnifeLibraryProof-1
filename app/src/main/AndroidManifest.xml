@@ -16,6 +16,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--        COPY FROM HERE TO THE END TO YOUR APPLICATION"S MANIFEST-->
+
+        <!--    google_maps_key is in google_maps_api.xml -->
+        <!--    The file is located in the Maps (library) layout; not in this application -->
+        <!--    Builder will fail if Maps library is not imported-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <!--  Below, update the package name in android:name and android:parentActivityName   -->
+        <activity
+            android:name="com.example.mylibrary7.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName="com.example.pocketknifelibraryproof_1.MainActivity">
+            <!--            Below, update the <meta-data android:value=""  Use the same package name above -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.pocketknifelibraryproof_1.MainActivity" />
+        </activity>
+        <!--        END COPY FROM HERE TO THE END TO YOUR APPLICATION"S MANIFEST-->
+
     </application>
+
 
 </manifest>

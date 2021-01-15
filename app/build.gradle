@@ -42,4 +42,17 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation project(path: ':mylibrary1')
+    implementation project(path: ':mylibrary2')
+    implementation project(path: ':mylibrary3')
+    implementation project(path: ':mylibrary4')
+    implementation project(path: ':mylibrary5')
+    implementation project(path: ':mylibrary6')
+    implementation project(path: ':mylibrary7')
+
+//    App Center
+    def appCenterSdkVersion = '3.2.2'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
 }
