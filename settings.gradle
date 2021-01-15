@@ -1,0 +1,9 @@
+include ':mylibrary7'
+include ':mylibrary6'
+include ':mylibrary5'
+include ':mylibrary4'
+include ':mylibrary3'
+include ':mylibrary2'
+include ':mylibrary1'
+include ':app'
+rootProject.name = "PocketKnifeLibraryProof-1"
