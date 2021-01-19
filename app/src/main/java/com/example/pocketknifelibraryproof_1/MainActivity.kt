@@ -8,14 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
-import com.microsoft.appcenter.AppCenter
-import com.microsoft.appcenter.Flags
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.crashes.Crashes
-import com.microsoft.appcenter.distribute.Distribute
-import com.microsoft.appcenter.utils.async.AppCenterConsumer
-
 import com.example.mylibrary1.getNetworkStatus
 import com.example.mylibrary2.methodWithPermissions
 import com.example.mylibrary3.getMACAddress
@@ -23,7 +15,12 @@ import com.example.mylibrary4.isItRooted
 import com.example.mylibrary5.getLocationStatus
 import com.example.mylibrary6.getBlueToothStatus
 import com.example.mylibrary7.MapsActivity
-
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.Flags
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
+import com.microsoft.appcenter.distribute.Distribute
+import com.microsoft.appcenter.utils.async.AppCenterConsumer
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,10 +49,23 @@ class MainActivity : AppCompatActivity() {
         textMessage = findViewById(R.id.message)
         textMessage.setTextColor(Color.BLACK)
 
+        // Setup Microsoft AppCenter
         AppCenter.start(
-                application, "20dd1e0b-3ec2-421d-8d1b-8e9d88643aa8",
-                Analytics::class.java, Crashes::class.java, Distribute::class.java
+            application, "20dd1e0b-3ec2-421d-8d1b-8e9d88643aa8",
+            Analytics::class.java, Crashes::class.java, Distribute::class.java
         )
+        // Used AppCenter Distribute to:
+        //  Enable for debug builds
+        //  Check for update
+
+        // Releases are true by default but debug is not
+        Distribute.setEnabledForDebuggableBuild(true)
+        /* App updates occur when:
+           A higher value of versionCode or
+           An equal value of versionCode but a different value of versionName */
+        Distribute.checkForUpdate()
+
+        //  AppCenter can log previous crashes so we test this with a crash button in the app and handler here
         val future = Crashes.hasCrashedInLastSession()
         future.thenAccept(AppCenterConsumer {
             if (it) {
@@ -74,9 +84,9 @@ class MainActivity : AppCompatActivity() {
 
         crash_button.setOnClickListener {
             Analytics.trackEvent(
-                    getString(R.string.button_crashing_clicked),
-                    properties,
-                    Flags.CRITICAL
+                getString(R.string.button_crashing_clicked),
+                properties,
+                Flags.CRITICAL
             )
             Crashes.generateTestCrash()
         }
