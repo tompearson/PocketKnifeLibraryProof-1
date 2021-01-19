@@ -9,12 +9,13 @@ internal lateinit var mActivity: Context
 
 fun getMACAddress(mythis: Context, builder: StringBuilder): String {
     val res1 = StringBuilder()
+    val all: Collection<NetworkInterface>
 
     try {
         mActivity = mythis
         // Get MAC address
         // get all the interfaces
-        val all = Collections.list(NetworkInterface.getNetworkInterfaces())
+        all = Collections.list(NetworkInterface.getNetworkInterfaces())
         //find network interface wlan0
         for (networkInterface in all) {
             if (!networkInterface.name.equals("wlan0", ignoreCase = true)) continue
@@ -22,7 +23,7 @@ fun getMACAddress(mythis: Context, builder: StringBuilder): String {
             val macBytes = networkInterface.hardwareAddress
             if (macBytes == null) {
                 //return "";
-                return builder.append(mActivity.getString(R.string.no_mac_address), mActivity)
+                return builder.append(mActivity.getString(R.string.no_mac_address))
                     .toString()
             }
             for (b in macBytes) {
@@ -30,16 +31,20 @@ fun getMACAddress(mythis: Context, builder: StringBuilder): String {
             }
             if (res1.isNotEmpty()) {
                 res1.deleteCharAt(res1.length - 1)
+                return builder.append(
+                    mActivity.getString(R.string.mac_address), res1.toString()
+                ).toString()
             }
         }
-    } catch (ex: Exception) { // Handles when macBytes us null. Never happened yet.
+    } catch (ex: Exception) { // Handles the unknown
         return builder.append(
             mActivity.getString(R.string.mac_address),
             "GetMACAddress Exception " + ex.message,
             mActivity
         ).toString()
     }
-    return builder.append(
-        mActivity.getString(R.string.mac_address), res1.toString()
-    ).toString()
+    // if a MAC was found we've already returned
+        return builder.append(
+            mActivity.getString(R.string.mac_no_interface), ""
+        ).toString()
 }

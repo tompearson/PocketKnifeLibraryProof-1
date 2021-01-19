@@ -10,10 +10,10 @@ fun isItRooted(mythis: Context, builder: StringBuilder): String {
     val rootBeer = RootBeer(mythis)
     if (rootBeer.isRooted()) {
         //we found indication of root
-        builder.append(mythis.getString(R.string.isRooted))
+        builder.append(mythis.getString(R.string.isRooted)).toString()
     } else {
         //we didn't find indication of root
-        builder.append(mythis.getString(R.string.isNotRooted))
+        builder.append(mythis.getString(R.string.isNotRooted)).toString()
 
     }
     return builder.toString()

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mac_address">"\nMAC address: "</string>
-    <string name="no_mac_address">"\ncan't find MAC address "</string>
+    <string name="no_mac_address">"\nMAC address not found in wlan0 network interface"</string>
+    <string name="mac_no_interface">"\nNo wlan0 network interfaces found with MAC"</string>
 </resources>
