@@ -25,21 +25,23 @@ import com.microsoft.appcenter.utils.async.AppCenterConsumer
 
 class MainActivity : AppCompatActivity() {
 
-
-    lateinit var toast: Toast
     private lateinit var textMessage: TextView
     lateinit var button: Button
     lateinit var crash_button: Button
 
+    // builder (string) are parameters to the libraries and returned with text
     private val builder = StringBuilder()
+
+    // properties are used for AppCenter analytics
     private val properties: Map<String, String> = HashMap()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         Toast.makeText(this, getString(R.string.onCreate), Toast.LENGTH_SHORT).show()
 
-        // Setup buttons
+        /* Setup buttons */
         button = findViewById(R.id.button_Map_id)
         button.setText(R.string.title_map_button)
 
@@ -48,22 +50,26 @@ class MainActivity : AppCompatActivity() {
 
         textMessage = findViewById(R.id.message)
         textMessage.setTextColor(Color.BLACK)
+        /* End Setup buttons */
 
-        // Setup Microsoft AppCenter
+        /***** Setup Microsoft AppCenter *****/
         AppCenter.start(
             application, "20dd1e0b-3ec2-421d-8d1b-8e9d88643aa8",
             Analytics::class.java, Crashes::class.java, Distribute::class.java
         )
-        // Used AppCenter Distribute to:
+        // Use AppCenter Distribute to:
         //  Enable for debug builds
         //  Check for update
+        //  In app updates
+
+        // Enable Distribute
+        Distribute.setEnabled(true)
 
         // Releases are true by default but debug is not
         Distribute.setEnabledForDebuggableBuild(true)
         /* App updates occur when:
            A higher value of versionCode or
            An equal value of versionCode but a different value of versionName */
-        Distribute.checkForUpdate()
 
         //  AppCenter can log previous crashes so we test this with a crash button in the app and handler here
         val future = Crashes.hasCrashedInLastSession()
@@ -73,7 +79,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, getText(R.string.crash_oops), Toast.LENGTH_SHORT).show()
             }
         })
+        /***** End Setup Microsoft AppCenter *****/
 
+        /* Ready to call the libraries */
         methodWithPermissions(this)
 
         textMessage.setText(getNetworkStatus(this, builder))
@@ -81,7 +89,9 @@ class MainActivity : AppCompatActivity() {
         textMessage.setText(getBlueToothStatus(this, builder))
         textMessage.setText(getMACAddress(this, builder))
         textMessage.setText(isItRooted(this, builder))
+        /* End Ready to call the libraries */
 
+        /* The button handlers */
         crash_button.setOnClickListener {
             Analytics.trackEvent(
                 getString(R.string.button_crashing_clicked),
@@ -96,6 +106,7 @@ class MainActivity : AppCompatActivity() {
             val intent: Intent = Intent(this, MapsActivity::class.java).apply {}
             startActivity(intent)
         }
+        /* End The button handlers */
     }
 
     @SuppressLint("ShowToast")

@@ -4,6 +4,15 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('..\\app\\kotlin.jks')
+            storePassword 'oscardog'
+            keyAlias = 'pocketknife'
+            keyPassword 'oscardog'
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -11,7 +20,7 @@ android {
         applicationId "com.example.pocketknifelibraryproof_1"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,6 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
